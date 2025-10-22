@@ -3,16 +3,16 @@ import { useContext } from 'react';
 import { useParams } from 'react-router-dom'
 import { AppContext } from '../context/AppContext';
 import { assets } from '../assets/assets';
-
-
+import RelatedDoctors from '../components/relatedDoctors';
 
 const Appointment = () => {
 
   const {docId} = useParams();
   const {doctors, currencySymbol} = useContext(AppContext)
+  const daysOfWeek = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
+
 
   const [docInfo, setDocInfo] = useState(null)
-
   const [docSlots, setDocSlots] = useState([])
   const [slotIndex, setSlotIndex] = useState(0)
   const [slotTime, setSlotTime] = useState("")
@@ -117,6 +117,34 @@ const Appointment = () => {
         
         </div>
       </div>
+
+      {/* ---- Booking slots ---- */}
+      <div className='sm:ml-72 sm:pl-4 mt-4 font-medium text-gray-700'>
+
+        <p>Booking slots</p>
+        <div className='flex gap-3 items-center w-full overflow-x-scroll mt-4'>
+          {
+            docSlots.length && docSlots.map((item, index) => (
+              <div onClick={() => setSlotIndex(index)} key={index} className={`text-center py-6 min-w-16 rounded-full cursor-pointer ${slotIndex === index ? 'bg-primary text-white' : 'border border-gray-200'}`}>
+                <p>{item[0] && daysOfWeek[item[0].datetime.getDay()]}</p>
+                <p>{item[0] && item[0].datetime.getDate()}</p>
+              </div>
+            ))
+          }
+        </div>
+
+        <div className='flex items-center gap-3 w-full overflow-x-scroll mt-4'>
+          {docSlots.length && docSlots[slotIndex].map((item, index) => (
+            <p onClick={() => setSlotTime(item.time)} className={`text-sm font-light flex-shrink-0 px-5 py-2 rounded-full cursor-pointer ${item.time === slotTime ? 'bg-primary text-white' : 'text-gray-400 border border-gray-300'}`} key={index}>
+              {item.time.toLowerCase()}
+            </p>
+          ))}
+        </div>
+          <button className='bg-primary text-white text-sm font-light px-14 py-3 rounded-full'>Book an appointment</button>
+
+      </div>
+          {/* listing related doctors */}
+          <RelatedDoctors docId={docId} speciality={docInfo.speciality} />
     </div>
   )
 }
