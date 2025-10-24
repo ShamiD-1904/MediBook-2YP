@@ -35,7 +35,7 @@ const Login = () => {
 
         <div className='w-full '>
           <p>Full Name</p>
-          <input className='border border-zinc-300 rounded w-full p-2 mt-1' type="password" onChange={(e) => setPassword(e.target.name)} value={email} required />
+          <input className='border border-zinc-300 rounded w-full p-2 mt-1' type="password" onChange={(e) => setPassword(e.target.name)} value={password} required />
         </div>
 
         <button className='bg-primary w-full text-white py-2 rounded-md text-base'>{state === 'Sign Up' ? "Create Account" : "Login"}</button>
